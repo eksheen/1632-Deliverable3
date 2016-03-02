@@ -62,7 +62,7 @@ public class HackerNewsTester {
 	    WebElement body=driver.findElement(By.tagName("body"));
 	    String bodyString=body.toString();
 	    System.out.println(bodyString);
-	    assertTrue(bodyString.contains("Bad login."));
+	    assertTrue(bodyString.contains("Bad login.")); //this does not work yet
 	  }
 	  
 	  @After
