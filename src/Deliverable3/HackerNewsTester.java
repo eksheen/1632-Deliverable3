@@ -86,6 +86,21 @@ public class HackerNewsTester {
 	}
 
 	@Test
+	public void testCreateAccBlankPass() throws Exception {
+		try {
+			logOut();
+		} catch (NoSuchElementException e) {
+			System.out.println("Already logged out \n");
+		}
+		driver.get(baseUrl + "/login?goto=news");
+		driver.findElement(By.xpath("(//input[@name='acct'])[2]")).clear();
+		driver.findElement(By.xpath("(//input[@name='acct'])[2]")).sendKeys("kfgnjdfngjdfg");
+		driver.findElement(By.xpath("//input[@value='create account']")).click();
+		String body = driver.findElement(By.tagName("body")).getText();
+		assertTrue(body.contains("Passwords should be at least 8 characters. Please choose another."));
+	}
+
+	@Test
 	public void testCreateAccConflictingUser() throws Exception {
 		try {
 			logOut();
@@ -102,13 +117,6 @@ public class HackerNewsTester {
 				"That username conflicts with an existing one. Names are case-insensitive. Please choose another."));
 	}
 
-	@Test
-	public void testClickForgotAccWithBadUsername() throws Exception {
-		driver.get(baseUrl + "/login?goto=news");
-		driver.findElement(By.xpath("(//input[@name='acct'])[2]")).clear();
-		driver.findElement(By.xpath("(//input[@name='acct'])[2]")).sendKeys("Monkey");
-		driver.findElement(By.xpath("//input[@value='create account']")).click();
-	}
 
 	/****************************************
 	 * USER STORY 2*****************************************
@@ -119,21 +127,13 @@ public class HackerNewsTester {
 	 * 
 	 *******************************************************************************************/
 	@Test
-	public void testCanYouUpvoteACommentWhileLoggedIn() throws Exception {
+	public void testNumberOfUpvotes() throws Exception {
 		logIn();
-		driver.findElement(By.linkText("comments")).click();
-		driver.findElement(By.linkText("parent")).click();
-		List<WebElement> upvotes_old = driver.findElements(By.className("votearrow"));
-		driver.findElement(By.cssSelector("div.votearrow")).click();
-		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 		driver.get(baseUrl + "/");
-		driver.findElement(By.linkText("comments")).click();
-		driver.findElement(By.linkText("parent")).click();
-		List<WebElement> upvotes_new = driver.findElements(By.className("votearrow"));
-		System.out.println("yolo"+upvotes_old.size());
-		System.out.println("yolo " +upvotes_new.size());
-		logOut();
-		assertTrue(upvotes_old.size() == upvotes_new.size()+1);
+		//Verify all posts have a score field
+		List<WebElement> scores= driver.findElements(By.className("score")); //this is the score of a post
+		List<WebElement> ranks= driver.findElements(By.className("rank")); //this is the current rank on the homepage
+		assertTrue(ranks.size() == scores.size()); //verify the number of ranks is equal to the number of scores
 	}
 
 	@Test
@@ -363,8 +363,9 @@ public class HackerNewsTester {
 		}
 		String title = driver.getTitle();
 		assertTrue(title.contains("Ask"));
-		assertTrue(askPosts >= num_posts.size() - 1); // have a margin of error
-														// of one
+		System.out.println(askPosts);
+		assertTrue(askPosts >= num_posts.size() - 2); // have a margin of error
+														// of two posts
 
 	}
 
