@@ -18,7 +18,7 @@ public class HackerNewsTester {
 	private boolean acceptNextAlert = true;
 	private String baseUrl = "https://news.ycombinator.com";
 	private StringBuffer verificationErrors = new StringBuffer();
-	static WebDriver driver = new FirefoxDriver();
+	static WebDriver driver = new HtmlUnitDriver();
 
 	// Start at the home page for hackernews for each test
 	@Before
@@ -49,6 +49,7 @@ public class HackerNewsTester {
 
 	@Test
 	public void testLoginNoUsernameNoPassword() throws Exception {
+		logIn();
 		logOut();
 		driver.findElement(By.linkText("login")).click();
 		driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
@@ -121,12 +122,18 @@ public class HackerNewsTester {
 	public void testCanYouUpvoteACommentWhileLoggedIn() throws Exception {
 		logIn();
 		driver.findElement(By.linkText("comments")).click();
+		driver.findElement(By.linkText("parent")).click();
 		List<WebElement> upvotes_old = driver.findElements(By.className("votearrow"));
 		driver.findElement(By.cssSelector("div.votearrow")).click();
+		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 		driver.get(baseUrl + "/");
+		driver.findElement(By.linkText("comments")).click();
+		driver.findElement(By.linkText("parent")).click();
 		List<WebElement> upvotes_new = driver.findElements(By.className("votearrow"));
-		assertTrue(upvotes_old.size() == upvotes_new.size()+1);
+		System.out.println(upvotes_old.size());
+		System.out.println(upvotes_new.size());
 		logOut();
+		assertTrue(upvotes_old.size() == upvotes_new.size()+1);
 	}
 
 	@Test
@@ -139,6 +146,7 @@ public class HackerNewsTester {
 		List<WebElement> upvotes_new = driver.findElements(By.className("votearrow"));
 		System.out.println(upvotes_old.size());
 		System.out.println(upvotes_new.size());
+		logOut();
 		assertTrue(upvotes_old.size() == upvotes_new.size()+1);
 	}
 
@@ -153,16 +161,26 @@ public class HackerNewsTester {
 	@Test
 	public void testUpvoteACommentWhileLoggedIn() throws Exception {
 		logIn();
-		driver.get(baseUrl + "/news");
 		driver.findElement(By.linkText("comments")).click();
+		driver.findElement(By.linkText("parent")).click();
+		List<WebElement> upvotes_old= driver.findElements(By.className("votearrow"));
 		driver.findElement(By.cssSelector("div.votearrow")).click();
+		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+		driver.navigate().refresh();
+		List<WebElement> upvotes_new = driver.findElements(By.className("votearrow"));
+		System.out.println(upvotes_old.size());
+		System.out.println(upvotes_new.size());
+		logOut();
+		assertTrue(upvotes_old.size() == upvotes_new.size()+1);
 	}
 
 	@Test
 	public void testUpvoteACommentWhileNotLoggedIn() throws Exception {
-		driver.get(baseUrl + "/news");
 		driver.findElement(By.linkText("comments")).click();
+		driver.findElement(By.linkText("parent")).click();
 		driver.findElement(By.cssSelector("div.votearrow")).click();
+		String body = driver.findElement(By.tagName("body")).getText();
+		assertTrue(body.contains("You have to be logged in to vote."));
 	}
 
 	/****************************************
@@ -290,7 +308,7 @@ public class HackerNewsTester {
 			time2 = Integer.parseInt(ages.get(1).getText().substring(0, 1));// I'm
 																			// Sorry
 		// I'm so sorry for violating the law of demeter
-		assertTrue(time1 < time2);
+		assertTrue(time1 <= time2);
 	}
 
 	@Test
