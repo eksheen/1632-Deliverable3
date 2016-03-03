@@ -43,7 +43,8 @@ public class HackerNewsTester {
 		assertTrue(title.contains("Hacker News"));
 		
 	}
-   	
+	
+
 	  @Test
 	  public void testLoginNoUsernameNoPassword() throws Exception {
 	    driver.findElement(By.linkText("login")).click();
@@ -117,19 +118,68 @@ public class HackerNewsTester {
 	    driver.findElement(By.xpath("//input[@value='create account']")).click();
 	  }
 	  
+
 /****************************************USER STORY 4******************************************/
 
 	  @Test
 	  public void testFilterByNew() throws Exception {
 			driver.findElement(By.linkText("new")).click();
 			List ages= driver.findElements(By.className("age"));
-			ag
+			//ag
 			assertTrue();
 	  }
 	  
+	  @Test
+	  public void testClickForgotAccWithBadUsername() throws Exception {
+	    driver.get(baseUrl + "/login?goto=news");
+	    driver.findElement(By.xpath("(//input[@name='acct'])[2]")).clear();
+	    driver.findElement(By.xpath("(//input[@name='acct'])[2]")).sendKeys("Monkey");
+	    driver.findElement(By.xpath("//input[@value='create account']")).click();
+	  }
+	  
+	  @Test
+	  public void testUpvoteASubmissionWhileLoggedIn() throws Exception {
+	    driver.get(baseUrl + "/");
+	    driver.findElement(By.linkText("login")).click();
+	    driver.findElement(By.name("acct")).clear();
+	    driver.findElement(By.name("acct")).sendKeys("1632_test");
+	    driver.findElement(By.name("pw")).clear();
+	    driver.findElement(By.name("pw")).sendKeys("laboon123");
+	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+	    driver.findElement(By.cssSelector("div.votearrow")).click();
+	    driver.findElement(By.linkText("logout")).click();
+	  }
+	  
+	  @Test
+	  public void testUpvoteWhileNotLoggedIn() throws Exception {
+	    driver.get(baseUrl + "/");
+	    driver.findElement(By.cssSelector("div.votearrow")).click();
+	  }
+	  
+	  @Test
+	  public void testUpvoteACommentWhileLoggedIn() throws Exception {
+	    driver.get(baseUrl + "/news");
+	    driver.findElement(By.linkText("login")).click();
+	    driver.findElement(By.name("acct")).clear();
+	    driver.findElement(By.name("acct")).sendKeys("1632_test");
+	    driver.findElement(By.name("pw")).clear();
+	    driver.findElement(By.name("pw")).sendKeys("laboon123");
+	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+	    driver.findElement(By.linkText("comments")).click();
+	    driver.findElement(By.cssSelector("div.votearrow")).click();
+	    driver.findElement(By.linkText("logout")).click();
+	  }
+	  
+	  @Test
+	  public void testUpvoteACommentWhileNotLoggedIn() throws Exception {
+	    driver.get(baseUrl + "/news");
+	    driver.findElement(By.linkText("comments")).click();
+	    driver.findElement(By.cssSelector("div.votearrow")).click();
+	  }
+	  	  
 	  @After
 	  public void tearDown() throws Exception {
-//	    driver.quit();
+	    //driver.quit();
 	    String verificationErrorString = verificationErrors.toString();
 	    if (!"".equals(verificationErrorString)) {
 	      fail(verificationErrorString);
