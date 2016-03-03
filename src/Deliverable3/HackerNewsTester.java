@@ -114,6 +114,15 @@ public class HackerNewsTester {
 	    driver.findElement(By.xpath("//input[@value='create account']")).click();
 	  }
 	  
+	  @Test
+	  public void testCreateAccBadPass() throws Exception {
+	    driver.get(baseUrl + "/news");
+	    driver.findElement(By.linkText("login")).click();
+	    driver.findElement(By.xpath("(//input[@name='acct'])[2]")).clear();
+	    driver.findElement(By.xpath("(//input[@name='acct'])[2]")).sendKeys("Monkey");
+	    driver.findElement(By.xpath("//input[@value='create account']")).click();
+	  }
+	  
 	  	  
 	  @After
 	  public void tearDown() throws Exception {
