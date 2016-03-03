@@ -18,7 +18,7 @@ public class HackerNewsTester {
 	private boolean acceptNextAlert = true;
 	private String baseUrl = "https://news.ycombinator.com";
 	private StringBuffer verificationErrors = new StringBuffer();
-	static WebDriver driver = new HtmlUnitDriver();
+	static WebDriver driver = new FirefoxDriver();
 
 	// Start at the home page for hackernews for each test
 	@Before
@@ -130,8 +130,8 @@ public class HackerNewsTester {
 		driver.findElement(By.linkText("comments")).click();
 		driver.findElement(By.linkText("parent")).click();
 		List<WebElement> upvotes_new = driver.findElements(By.className("votearrow"));
-		System.out.println(upvotes_old.size());
-		System.out.println(upvotes_new.size());
+		System.out.println("yolo"+upvotes_old.size());
+		System.out.println("yolo " +upvotes_new.size());
 		logOut();
 		assertTrue(upvotes_old.size() == upvotes_new.size()+1);
 	}
@@ -176,6 +176,11 @@ public class HackerNewsTester {
 
 	@Test
 	public void testUpvoteACommentWhileNotLoggedIn() throws Exception {
+		try {
+			logOut();
+		} catch (NoSuchElementException e) {
+			System.out.println("Already logged out \n");
+		}
 		driver.findElement(By.linkText("comments")).click();
 		driver.findElement(By.linkText("parent")).click();
 		driver.findElement(By.cssSelector("div.votearrow")).click();
@@ -194,10 +199,16 @@ public class HackerNewsTester {
 
 	@Test
 	public void testAddCommentNotLoggedIn() throws Exception {
+		try {
+			logOut();
+		} catch (NoSuchElementException e) {
+			System.out.println("Already logged out \n");
+		}
 		driver.findElement(By.linkText("comments")).click();
 		driver.findElement(By.linkText("parent")).click();
 		driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
 		String error = driver.findElement(By.tagName("body")).getText();
+		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 		assertTrue(error.contains("You have to be logged in to comment."));
 	}
 
