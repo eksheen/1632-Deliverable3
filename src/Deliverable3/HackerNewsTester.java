@@ -5,6 +5,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -28,6 +30,7 @@ public class HackerNewsTester {
 	public void setUp() throws Exception {
 		
 	    driver.get(baseUrl + "/");
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 	}
 	@Test
 	public void testShowsCorrectTitle() {
@@ -80,10 +83,14 @@ public class HackerNewsTester {
 	  @Test
 	  public void testSubmitLoggedIn() throws Exception {
 		logIn();
-	    driver.findElement(By.linkText("submit")).click();
-	    Thread.sleep(4000);
+		//driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		WebElement thing=driver.findElement(By.linkText("submit"));
+	    thing.click();
+	    System.out.println("hey");
+	    Thread.sleep(1000);
 	   boolean exists=!driver.findElements(By.name("text")).isEmpty() && !driver.findElements(By.name("url")).isEmpty() && !driver.findElements(By.name("title")).isEmpty();
-	    assertTrue(exists);
+	   logOut();
+	   assertTrue(exists);
 	  }
 	  
 	  public void testCanYouUpvoteACommentWhileLoggedIn() throws Exception {
@@ -131,11 +138,13 @@ public class HackerNewsTester {
 		    driver.findElement(By.name("pw")).clear();
 		    driver.findElement(By.name("pw")).sendKeys("laboon123");
 		    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
-		    driver.findElement(By.linkText("submit")).click();
 	  }
+	  
 	  private void logOut() {
+		    driver.get(baseUrl + "/");
 		    driver.findElement(By.linkText("logout")).click();
 	  }
+	  
 	  private boolean isElementPresent(By by) {
 	    try {
 	      driver.findElement(by);
