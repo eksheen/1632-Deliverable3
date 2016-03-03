@@ -307,25 +307,20 @@ public class HackerNewsTester {
 																					// Sorry
 		else
 			oldtime = Integer.parseInt(ages.get(0).getText().substring(0, 1)); // I'm Sorry
-		
-		for (int i=1;i<ages.size();i++)
-		{
 		// I'm Sorry
-		if (ages.get(i).getText().contains("minutes"))
-			time2 = Integer.parseInt(ages.get(i).getText().substring(0, 1)) * 60; // I'm
+		if (ages.get(1).getText().contains("minutes"))
+			time2 = Integer.parseInt(ages.get(1).getText().substring(0, 1)) * 60; // I'm
 																					// Sorry
-		else if (ages.get(i).getText().contains("hours"))
-			time2 = Integer.parseInt(ages.get(i).getText().substring(0, 1)) * 3600; // I'm
+		else if (ages.get(1).getText().contains("hours"))
+			time2 = Integer.parseInt(ages.get(1).getText().substring(0, 1)) * 3600; // I'm
 																					// Sorry
 		else
-			time2 = Integer.parseInt(ages.get(i).getText().substring(0, 1));// I'm
+			time2 = Integer.parseInt(ages.get(1).getText().substring(0, 1));// I'm
 																			// Sorry
 		// I'm so sorry for violating the law of demeter
 			System.out.println(oldtime);
 			System.out.println(time2);
 			assertTrue(oldtime <= time2);
-			oldtime=time2;
-		}
 	}
 
 	@Test
