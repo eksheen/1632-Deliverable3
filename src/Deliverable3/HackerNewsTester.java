@@ -77,6 +77,41 @@ public class HackerNewsTester {
 	    assertTrue(error.contains("You have to be logged in to submit."));
 	  }
 	  
+	  @Test
+	  public void testCanYouUpvoteACommentWhileLoggedIn() throws Exception {
+	    driver.get(baseUrl + "/news");
+	    driver.findElement(By.linkText("login")).click();
+	    driver.findElement(By.name("acct")).clear();
+	    driver.findElement(By.name("acct")).sendKeys("1632_test");
+	    driver.findElement(By.name("pw")).clear();
+	    driver.findElement(By.name("pw")).sendKeys("laboon123");
+	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+	    driver.findElement(By.linkText("comments")).click();
+	    driver.findElement(By.cssSelector("div.votearrow")).click();
+	    driver.findElement(By.linkText("logout")).click();
+	  }
+	  
+	  @Test
+	  public void testLoginBadCredentials() throws Exception {
+	    driver.get(baseUrl + "/login");
+	    driver.findElement(By.name("acct")).clear();
+	    driver.findElement(By.name("acct")).sendKeys("Monkey");
+	    driver.findElement(By.name("pw")).clear();
+	    driver.findElement(By.name("pw")).sendKeys("MOnkey");
+	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+	  }
+	  
+	  @Test
+	  public void testCreateAccBlankUN() throws Exception {
+	    driver.get(baseUrl + "/login?goto=news");
+	    driver.findElement(By.xpath("(//input[@name='pw'])[2]")).clear();
+	    driver.findElement(By.xpath("(//input[@name='pw'])[2]")).sendKeys("Monkey");
+	    driver.findElement(By.xpath("//input[@value='create account']")).click();
+	  }
+	  
+	  
+	  
+	  
 	  @After
 	  public void tearDown() throws Exception {
 	    //driver.quit();
