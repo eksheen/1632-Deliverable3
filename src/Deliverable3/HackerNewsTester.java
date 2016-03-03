@@ -58,11 +58,23 @@ public class HackerNewsTester {
 	  public void testLoginNoUsernameNoPassword() throws Exception {
 	    driver.findElement(By.linkText("login")).click();
 	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
-	    Thread.sleep(4000);
-	    WebElement body=driver.findElement(By.tagName("body"));
-	    String bodyString=body.toString();
-	    System.out.println(bodyString);
-	    assertTrue(bodyString.contains("Bad login.")); //this does not work yet
+	    String body=driver.findElement(By.tagName("body")).getText();
+	    assertTrue(body.contains("Bad login.")); //this does not work yet
+	  }
+	  
+	  @Test
+	  public void testAddCommentNotLoggedIn() throws Exception {
+	    driver.findElement(By.linkText("comments")).click();
+	    driver.findElement(By.linkText("parent")).click();
+	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+	    String error=driver.findElement(By.tagName("body")).getText();
+	    assertTrue(error.contains("You have to be logged in to comment."));
+	  }
+	  @Test
+	  public void testSubmitNotLoggedIn() throws Exception {
+	    driver.findElement(By.linkText("submit")).click();
+	    String error=driver.findElement(By.tagName("body")).getText();
+	    assertTrue(error.contains("You have to be logged in to submit."));
 	  }
 	  
 	  @After
