@@ -86,6 +86,7 @@ public class HackerNewsTester {
 
 	  }
 	  
+	  
 	  @After
 	  public void tearDown() throws Exception {
 	    //driver.quit();
@@ -93,6 +94,16 @@ public class HackerNewsTester {
 	    if (!"".equals(verificationErrorString)) {
 	      fail(verificationErrorString);
 	    }
+	  }
+	  
+	  private void logIn(){
+		    driver.findElement(By.linkText("login")).click();
+		    driver.findElement(By.name("acct")).clear();
+		    driver.findElement(By.name("acct")).sendKeys("1632_test");
+		    driver.findElement(By.name("pw")).clear();
+		    driver.findElement(By.name("pw")).sendKeys("laboon123");
+		    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+		    driver.findElement(By.linkText("submit")).click();
 	  }
 
 	  private boolean isElementPresent(By by) {
