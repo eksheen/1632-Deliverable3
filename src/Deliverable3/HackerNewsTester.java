@@ -77,6 +77,15 @@ public class HackerNewsTester {
 	    assertTrue(error.contains("You have to be logged in to submit."));
 	  }
 	  
+	  @Test
+	  public void testSubmitLoggedIn() throws Exception {
+		driver.findElement(By.linkText("login")).click();
+	    driver.findElement(By.linkText("submit")).click();
+	    	assertTrue(isElementPresent(By.name("text")) && isElementPresent(By.name("url")) && isElementPresent(By.name("title")));
+	    		
+
+	  }
+	  
 	  @After
 	  public void tearDown() throws Exception {
 	    //driver.quit();
