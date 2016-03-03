@@ -5,6 +5,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
+
+import java.awt.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -32,6 +34,7 @@ public class HackerNewsTester {
 	    driver.get(baseUrl + "/");
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 	}
+	
 	@Test
 	public void testShowsCorrectTitle() {
 		
@@ -114,10 +117,19 @@ public class HackerNewsTester {
 	    driver.findElement(By.xpath("//input[@value='create account']")).click();
 	  }
 	  
-	  	  
+/****************************************USER STORY 4******************************************/
+
+	  @Test
+	  public void testFilterByNew() throws Exception {
+			driver.findElement(By.linkText("new")).click();
+			List ages= driver.findElements(By.className("age"));
+			ag
+			assertTrue();
+	  }
+	  
 	  @After
 	  public void tearDown() throws Exception {
-	    driver.quit();
+//	    driver.quit();
 	    String verificationErrorString = verificationErrors.toString();
 	    if (!"".equals(verificationErrorString)) {
 	      fail(verificationErrorString);
