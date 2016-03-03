@@ -79,22 +79,21 @@ public class HackerNewsTester {
 	  
 	  @Test
 	  public void testSubmitLoggedIn() throws Exception {
-		driver.findElement(By.linkText("login")).click();
+		logIn();
 	    driver.findElement(By.linkText("submit")).click();
-	    	assertTrue(isElementPresent(By.name("text")) && isElementPresent(By.name("url")) && isElementPresent(By.name("title")));
+	    Thread.sleep(4000);
+	   boolean exists=!driver.findElements(By.name("text")).isEmpty() && !driver.findElements(By.name("url")).isEmpty() && !driver.findElements(By.name("title")).isEmpty();
+	    assertTrue(exists);
 	  }
 	  
 	  public void testCanYouUpvoteACommentWhileLoggedIn() throws Exception {
 	    driver.get(baseUrl + "/news");
-	    driver.findElement(By.linkText("login")).click();
-	    driver.findElement(By.name("acct")).clear();
-	    driver.findElement(By.name("acct")).sendKeys("1632_test");
-	    driver.findElement(By.name("pw")).clear();
-	    driver.findElement(By.name("pw")).sendKeys("laboon123");
+	    logIn();
 	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
 	    driver.findElement(By.linkText("comments")).click();
 	    driver.findElement(By.cssSelector("div.votearrow")).click();
 	    driver.findElement(By.linkText("logout")).click();
+	    logOut();
 	  }
 	  
 	  @Test
@@ -134,7 +133,9 @@ public class HackerNewsTester {
 		    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
 		    driver.findElement(By.linkText("submit")).click();
 	  }
-
+	  private void logOut() {
+		    driver.findElement(By.linkText("logout")).click();
+	  }
 	  private boolean isElementPresent(By by) {
 	    try {
 	      driver.findElement(by);
